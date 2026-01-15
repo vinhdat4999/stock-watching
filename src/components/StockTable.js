@@ -379,7 +379,6 @@ function getChangeValue(row, data, buyOrders, sellOrders) {
 
 function getChangePercent(row, data, buyOrders, sellOrders) {
     const changeValue = getChangeValue(row, data, buyOrders, sellOrders);
-    const currentPrice = getCurrentPrice(data);
     const marketRef = (data.referencePrice || 0) / CONSTANTS.PRICE_DIVISOR;
 
     if (row.type === 'buy') {

@@ -23,8 +23,8 @@ export async function fetchStockDataFromSimplizeAPI(symbol) {
 
 // Convert Simplize API response to WebSocket-like format
 function convertSimplizeDataToStockData(symbol, apiData) {
+    // eslint-disable-next-line no-unused-vars
     const change = apiData.netChange !== undefined ? apiData.netChange : (apiData.priceClose - apiData.priceReference);
-    const changePercent = apiData.pctChange !== undefined ? apiData.pctChange : (apiData.priceReference > 0 ? (change / apiData.priceReference) * 100 : 0);
 
     return {
         messageType: CONSTANTS.MESSAGE_TYPE.MAIN,

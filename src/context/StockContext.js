@@ -307,6 +307,23 @@ export function StockProvider({ children }) {
         return Array.from(allSymbols);
     }, [state.followingSymbols, state.holdingStocks, state.buyOrders, state.sellOrders, state.alerts]);
 
+    // Stop API polling
+    const stopApiPolling = useCallback(() => {
+        if (apiPollingRef.current) {
+            clearInterval(apiPollingRef.current);
+            apiPollingRef.current = null;
+        }
+    }, []);
+
+    // Connect to WebSocket
+    const connectToWebSocket = useCallback(() => {
+        const wsUrl = state.useCustomDataSource && state.dataSourceUrl
+            ? state.dataSourceUrl
+            : CONSTANTS.SOCKET_URL;
+
+        websocketService.connect(wsUrl, handleDataUpdate, handleStatusChange);
+    }, [state.useCustomDataSource, state.dataSourceUrl, handleDataUpdate, handleStatusChange]);
+
     // Start API polling
     const startApiPolling = useCallback(() => {
         // Stop WebSocket
@@ -363,24 +380,7 @@ export function StockProvider({ children }) {
                 }
             }
         }, pollingInterval);
-    }, [state.useCustomDataSource, state.displayIndex, getAllSymbols, handleStatusChange]);
-
-    // Stop API polling
-    const stopApiPolling = useCallback(() => {
-        if (apiPollingRef.current) {
-            clearInterval(apiPollingRef.current);
-            apiPollingRef.current = null;
-        }
-    }, []);
-
-    // Connect to WebSocket
-    const connectToWebSocket = useCallback(() => {
-        const wsUrl = state.useCustomDataSource && state.dataSourceUrl
-            ? state.dataSourceUrl
-            : CONSTANTS.SOCKET_URL;
-
-        websocketService.connect(wsUrl, handleDataUpdate, handleStatusChange);
-    }, [state.useCustomDataSource, state.dataSourceUrl, handleDataUpdate, handleStatusChange]);
+    }, [state.useCustomDataSource, state.displayIndex, getAllSymbols, handleStatusChange, stopApiPolling, connectToWebSocket]);
 
     // Start lunch break monitoring
     const startLunchBreakMonitoring = useCallback(() => {

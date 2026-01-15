@@ -1,13 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 function ChartModal({ isOpen, onClose, symbol }) {
     const containerRef = useRef(null);
-    const [loadError, setLoadError] = useState(false);
 
     useEffect(() => {
         if (!isOpen || !symbol) return;
-
-        setLoadError(false);
 
         // TradingView uses format: EXCHANGE:SYMBOL
         // Vietnamese stocks use HOSE (Ho Chi Minh) or HNX (Hanoi)
@@ -72,16 +69,16 @@ function ChartModal({ isOpen, onClose, symbol }) {
             script.async = true;
             script.onload = loadTradingView;
             script.onerror = () => {
-                setLoadError(true);
                 showFallback();
             };
             document.head.appendChild(script);
         }
 
+        const container = containerRef.current;
         return () => {
             // Cleanup on unmount
-            if (containerRef.current) {
-                containerRef.current.innerHTML = '';
+            if (container) {
+                container.innerHTML = '';
             }
         };
     }, [isOpen, symbol]);
