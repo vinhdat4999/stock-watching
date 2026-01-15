@@ -120,7 +120,7 @@ export function isMarketClosed(useCustomDataSource = false) {
         return true;
     }
 
-    if (hours >= 3) {
+    if (hours >= 4) {
         if (hours < 14) {
             return false;
         }
