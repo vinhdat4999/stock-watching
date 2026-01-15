@@ -301,10 +301,11 @@ export function StockProvider({ children }) {
             ...state.followingSymbols,
             ...state.holdingStocks.map(h => h.symbol),
             ...state.buyOrders.map(b => b.symbol),
-            ...state.sellOrders.map(s => s.symbol)
+            ...state.sellOrders.map(s => s.symbol),
+            ...state.alerts.filter(a => !a.triggered).map(a => a.symbol)
         ]);
         return Array.from(allSymbols);
-    }, [state.followingSymbols, state.holdingStocks, state.buyOrders, state.sellOrders]);
+    }, [state.followingSymbols, state.holdingStocks, state.buyOrders, state.sellOrders, state.alerts]);
 
     // Start API polling
     const startApiPolling = useCallback(() => {
@@ -447,7 +448,8 @@ export function StockProvider({ children }) {
             ...state.followingSymbols,
             ...state.holdingStocks.map(h => h.symbol),
             ...state.buyOrders.map(b => b.symbol),
-            ...state.sellOrders.map(s => s.symbol)
+            ...state.sellOrders.map(s => s.symbol),
+            ...state.alerts.filter(a => !a.triggered).map(a => a.symbol)
         ]);
 
         if (allSymbols.size > 0) {
@@ -463,6 +465,7 @@ export function StockProvider({ children }) {
         state.holdingStocks,
         state.buyOrders,
         state.sellOrders,
+        state.alerts,
         state.displayIndex
     ]);
 

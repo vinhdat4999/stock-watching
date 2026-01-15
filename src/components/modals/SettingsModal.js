@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useStock } from '../../context/StockContext';
 import { DEFAULT_DATA_SOURCE_URL } from '../../utils/constants';
 
 function SettingsModal({ isOpen, onClose }) {
     const { state, updateSettings } = useStock();
+    const prevIsOpenRef = useRef(false);
 
     const [displayIndex, setDisplayIndex] = useState(state.displayIndex);
     const [displayVolume, setDisplayVolume] = useState(state.displayVolume);
@@ -11,15 +12,17 @@ function SettingsModal({ isOpen, onClose }) {
     const [useCustomDataSource, setUseCustomDataSource] = useState(state.useCustomDataSource);
     const [dataSourceUrl, setDataSourceUrl] = useState(state.dataSourceUrl || DEFAULT_DATA_SOURCE_URL);
 
+    // Only sync values when modal opens (transition from closed to open)
     useEffect(() => {
-        if (isOpen) {
+        if (isOpen && !prevIsOpenRef.current) {
             setDisplayIndex(state.displayIndex);
             setDisplayVolume(state.displayVolume);
             setSellWatching(state.sellWatching);
             setUseCustomDataSource(state.useCustomDataSource);
             setDataSourceUrl(state.dataSourceUrl || DEFAULT_DATA_SOURCE_URL);
         }
-    }, [isOpen, state]);
+        prevIsOpenRef.current = isOpen;
+    }, [isOpen, state.displayIndex, state.displayVolume, state.sellWatching, state.useCustomDataSource, state.dataSourceUrl]);
 
     const handleSave = () => {
         updateSettings({

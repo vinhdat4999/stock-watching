@@ -14,6 +14,24 @@ function AlertToast() {
     const [isVisible, setIsVisible] = useState(false);
     const hideTimeoutRef = useRef(null);
     const checkIntervalRef = useRef(null);
+    
+    // Use refs to store latest values to avoid recreating checkAlerts on every change
+    const alertsRef = useRef(alerts);
+    const stockDataMapRef = useRef(stockDataMap);
+    const updateAlertRef = useRef(updateAlert);
+    
+    // Keep refs updated
+    useEffect(() => {
+        alertsRef.current = alerts;
+    }, [alerts]);
+    
+    useEffect(() => {
+        stockDataMapRef.current = stockDataMap;
+    }, [stockDataMap]);
+    
+    useEffect(() => {
+        updateAlertRef.current = updateAlert;
+    }, [updateAlert]);
 
     // Play alert sound using Web Audio API
     const playAlertSound = useCallback(() => {
@@ -64,12 +82,15 @@ function AlertToast() {
         }
     }, []);
 
-    // Check alerts
+    // Check alerts - using refs to avoid recreating function
     const checkAlerts = useCallback(() => {
-        alerts.forEach(alert => {
+        const currentAlerts = alertsRef.current;
+        const currentStockDataMap = stockDataMapRef.current;
+        
+        currentAlerts.forEach(alert => {
             if (alert.triggered) return;
 
-            const data = stockDataMap.get(alert.symbol);
+            const data = currentStockDataMap.get(alert.symbol);
             if (!data || data.messageType !== CONSTANTS.MESSAGE_TYPE.MAIN) return;
 
             const currentPrice = getCurrentPrice(data);
@@ -109,11 +130,11 @@ function AlertToast() {
             }
 
             if (shouldTrigger) {
-                updateAlert({ ...alert, triggered: true });
+                updateAlertRef.current({ ...alert, triggered: true });
                 showToast(message);
             }
         });
-    }, [alerts, stockDataMap, updateAlert, showToast]);
+    }, [showToast]);
 
     // Start checking alerts periodically
     useEffect(() => {
