@@ -6,7 +6,7 @@ import PortfolioTabs from './components/PortfolioTabs';
 import PortfolioSummary from './components/PortfolioSummary';
 import StockTable from './components/StockTable';
 import AlertToast from './components/AlertToast';
-import { SettingsModal, ImportModal, AlertsModal, StatsModal, ChartModal } from './components/modals';
+import { SettingsModal, ImportModal, AlertsModal, StatsModal } from './components/modals';
 import { generateShareUrl } from './services/storageService';
 import './styles/stock-monitor.css';
 
@@ -16,12 +16,10 @@ function AppContent() {
     const [importOpen, setImportOpen] = useState(false);
     const [alertsOpen, setAlertsOpen] = useState(false);
     const [statsOpen, setStatsOpen] = useState(false);
-    const [chartOpen, setChartOpen] = useState(false);
-    const [chartSymbol, setChartSymbol] = useState('');
 
     const handleOpenChart = useCallback((symbol) => {
-        setChartSymbol(symbol);
-        setChartOpen(true);
+        // Open TradingView directly in new tab
+        window.open(`https://www.tradingview.com/chart/?symbol=HOSE:${symbol}`, '_blank', 'noopener,noreferrer');
     }, []);
 
     const handleShare = useCallback(() => {
@@ -69,7 +67,6 @@ function AppContent() {
             <ImportModal isOpen={importOpen} onClose={() => setImportOpen(false)} />
             <AlertsModal isOpen={alertsOpen} onClose={() => setAlertsOpen(false)} />
             <StatsModal isOpen={statsOpen} onClose={() => setStatsOpen(false)} />
-            <ChartModal isOpen={chartOpen} onClose={() => setChartOpen(false)} symbol={chartSymbol} />
 
             {/* Alert Toast */}
             <AlertToast />
