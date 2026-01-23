@@ -11,8 +11,8 @@ export const CONSTANTS = {
     API_SIMPLIZE_BASE_URL: 'https://api2.simplize.vn/api/historical/quote'
 };
 
-export const DEFAULT_BUY_FEE = 0.0003; // 0.03%
-export const DEFAULT_SELL_FEE = 0.0013; // 0.13%
+export const DEFAULT_BUY_FEE = 0.0015; // 0.15%
+export const DEFAULT_SELL_FEE = 0.0025; // 0.25%
 export const DEFAULT_DATA_SOURCE_URL = 'ws://localhost:8025/websocket/stockdata';
 
 // Performance constants

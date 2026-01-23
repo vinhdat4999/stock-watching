@@ -13,12 +13,12 @@ function PortfolioTabs() {
     const [buySymbol, setBuySymbol] = useState('');
     const [buyQuantity, setBuyQuantity] = useState('');
     const [buyPrice, setBuyPrice] = useState('');
-    const [buyFee, setBuyFee] = useState('0.03');
+    const [buyFee, setBuyFee] = useState('0.15');
 
     const [sellSymbol, setSellSymbol] = useState('');
     const [sellQuantity, setSellQuantity] = useState('');
     const [sellPrice, setSellPrice] = useState('');
-    const [sellFee, setSellFee] = useState('0.13');
+    const [sellFee, setSellFee] = useState('0.25');
 
     const [followingSymbol, setFollowingSymbol] = useState('');
 

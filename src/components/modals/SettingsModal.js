@@ -1,38 +1,36 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useStock } from '../../context/StockContext';
 import { DEFAULT_DATA_SOURCE_URL } from '../../utils/constants';
 
 function SettingsModal({ isOpen, onClose }) {
     const { state, updateSettings } = useStock();
-    const prevIsOpenRef = useRef(false);
+    const dataSourceUrlRef = useRef(state.dataSourceUrl || DEFAULT_DATA_SOURCE_URL);
 
-    const [displayIndex, setDisplayIndex] = useState(state.displayIndex);
-    const [displayVolume, setDisplayVolume] = useState(state.displayVolume);
-    const [sellWatching, setSellWatching] = useState(state.sellWatching);
-    const [useCustomDataSource, setUseCustomDataSource] = useState(state.useCustomDataSource);
-    const [dataSourceUrl, setDataSourceUrl] = useState(state.dataSourceUrl || DEFAULT_DATA_SOURCE_URL);
+    // Auto-save when checkbox settings change
+    const handleDisplayIndexChange = (checked) => {
+        updateSettings({ displayIndex: checked });
+    };
 
-    // Only sync values when modal opens (transition from closed to open)
-    useEffect(() => {
-        if (isOpen && !prevIsOpenRef.current) {
-            setDisplayIndex(state.displayIndex);
-            setDisplayVolume(state.displayVolume);
-            setSellWatching(state.sellWatching);
-            setUseCustomDataSource(state.useCustomDataSource);
-            setDataSourceUrl(state.dataSourceUrl || DEFAULT_DATA_SOURCE_URL);
-        }
-        prevIsOpenRef.current = isOpen;
-    }, [isOpen, state.displayIndex, state.displayVolume, state.sellWatching, state.useCustomDataSource, state.dataSourceUrl]);
+    const handleDisplayVolumeChange = (checked) => {
+        updateSettings({ displayVolume: checked });
+    };
 
-    const handleSave = () => {
-        updateSettings({
-            displayIndex,
-            displayVolume,
-            sellWatching,
-            useCustomDataSource,
-            dataSourceUrl: dataSourceUrl || DEFAULT_DATA_SOURCE_URL
-        });
-        onClose();
+    const handleSellWatchingChange = (checked) => {
+        updateSettings({ sellWatching: checked });
+    };
+
+    const handleUseCustomDataSourceChange = (checked) => {
+        updateSettings({ useCustomDataSource: checked });
+    };
+
+    // Debounce URL changes to avoid too many updates while typing
+    const handleDataSourceUrlChange = (value) => {
+        dataSourceUrlRef.current = value;
+        // Auto-save URL after a short delay (500ms)
+        clearTimeout(window.dataSourceUrlTimeout);
+        window.dataSourceUrlTimeout = setTimeout(() => {
+            updateSettings({ dataSourceUrl: value || DEFAULT_DATA_SOURCE_URL });
+        }, 500);
     };
 
     if (!isOpen) return null;
@@ -49,38 +47,39 @@ function SettingsModal({ isOpen, onClose }) {
                         <label>
                             <input
                                 type="checkbox"
-                                checked={displayIndex}
-                                onChange={e => setDisplayIndex(e.target.checked)}
+                                checked={state.displayIndex}
+                                onChange={e => handleDisplayIndexChange(e.target.checked)}
                             />
                             Hiển thị chỉ số
                         </label>
                         <label>
                             <input
                                 type="checkbox"
-                                checked={displayVolume}
-                                onChange={e => setDisplayVolume(e.target.checked)}
+                                checked={state.displayVolume}
+                                onChange={e => handleDisplayVolumeChange(e.target.checked)}
                             />
                             Hiển thị khối lượng
                         </label>
                         <label>
                             <input
                                 type="checkbox"
-                                checked={sellWatching}
-                                onChange={e => setSellWatching(e.target.checked)}
+                                checked={state.sellWatching}
+                                onChange={e => handleSellWatchingChange(e.target.checked)}
                             />
                             Theo dõi lệnh bán (Sell Watching)
                         </label>
                         <label style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', justifyContent: 'flex-start' }}>
                             <input
                                 type="checkbox"
-                                checked={useCustomDataSource}
-                                onChange={e => setUseCustomDataSource(e.target.checked)}
+                                checked={state.useCustomDataSource}
+                                onChange={e => handleUseCustomDataSourceChange(e.target.checked)}
                             />
                             <span>Sử dụng test URL</span>
                             <input
                                 type="text"
-                                value={dataSourceUrl}
-                                onChange={e => setDataSourceUrl(e.target.value)}
+                                defaultValue={state.dataSourceUrl || DEFAULT_DATA_SOURCE_URL}
+                                onChange={e => handleDataSourceUrlChange(e.target.value)}
+                                placeholder={DEFAULT_DATA_SOURCE_URL}
                                 style={{
                                     padding: '6px',
                                     fontSize: '13px',
@@ -95,9 +94,11 @@ function SettingsModal({ isOpen, onClose }) {
                             />
                         </label>
                     </div>
-                </div>
-                <div className="modal-footer">
-                    <button className="save-btn" onClick={handleSave}>Lưu</button>
+                    <div style={{ marginTop: '15px', padding: '10px', background: 'rgba(96, 165, 250, 0.1)', borderRadius: '4px', border: '1px solid rgba(96, 165, 250, 0.3)' }}>
+                        <p style={{ margin: 0, fontSize: '12px', color: '#a0a0a0' }}>
+                            💡 Tất cả thay đổi được lưu tự động
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
