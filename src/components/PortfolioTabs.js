@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useStock } from '../context/StockContext';
 import { CONSTANTS, DEFAULT_BUY_FEE, DEFAULT_SELL_FEE } from '../utils/constants';
 
@@ -28,11 +28,23 @@ function PortfolioTabs() {
     const [sellFormOpen, setSellFormOpen] = useState(false);
     const [followingFormOpen, setFollowingFormOpen] = useState(false);
 
+    // Refs for input fields
+    const holdingSymbolRef = useRef(null);
+    const buySymbolRef = useRef(null);
+    const sellSymbolRef = useRef(null);
+    const followingSymbolRef = useRef(null);
+
     const handleAddHolding = () => {
         if (holdingSymbol && holdingQuantity > 0) {
             addHolding(holdingSymbol, parseInt(holdingQuantity));
             setHoldingSymbol('');
             setHoldingQuantity('');
+            // Focus back to symbol input
+            setTimeout(() => {
+                if (holdingSymbolRef.current) {
+                    holdingSymbolRef.current.focus();
+                }
+            }, 0);
         }
     };
 
@@ -44,6 +56,12 @@ function PortfolioTabs() {
             setBuySymbol('');
             setBuyQuantity('');
             setBuyPrice('');
+            // Focus back to symbol input
+            setTimeout(() => {
+                if (buySymbolRef.current) {
+                    buySymbolRef.current.focus();
+                }
+            }, 0);
         }
     };
 
@@ -55,6 +73,12 @@ function PortfolioTabs() {
             setSellSymbol('');
             setSellQuantity('');
             setSellPrice('');
+            // Focus back to symbol input
+            setTimeout(() => {
+                if (sellSymbolRef.current) {
+                    sellSymbolRef.current.focus();
+                }
+            }, 0);
         }
     };
 
@@ -65,6 +89,12 @@ function PortfolioTabs() {
                 .filter(s => s.length > 0);
             symbols.forEach(symbol => addFollowing(symbol));
             setFollowingSymbol('');
+            // Focus back to symbol input
+            setTimeout(() => {
+                if (followingSymbolRef.current) {
+                    followingSymbolRef.current.focus();
+                }
+            }, 0);
         }
     };
 
@@ -108,6 +138,7 @@ function PortfolioTabs() {
                     <h3>Thêm cổ phiếu đang nắm giữ</h3>
                     <div className="form-row">
                         <input
+                            ref={holdingSymbolRef}
                             type="text"
                             placeholder="Mã CK (VD: MBB)"
                             maxLength={10}
@@ -141,6 +172,7 @@ function PortfolioTabs() {
                     <h3>Thêm lệnh mua</h3>
                     <div className="form-row">
                         <input
+                            ref={buySymbolRef}
                             type="text"
                             placeholder="Mã CK"
                             maxLength={10}
@@ -193,6 +225,7 @@ function PortfolioTabs() {
                     <h3>Thêm lệnh bán</h3>
                     <div className="form-row">
                         <input
+                            ref={sellSymbolRef}
                             type="text"
                             placeholder="Mã CK"
                             maxLength={10}
@@ -245,6 +278,7 @@ function PortfolioTabs() {
                     <h3>Thêm mã theo dõi</h3>
                     <div className="form-row">
                         <input
+                            ref={followingSymbolRef}
                             type="text"
                             placeholder="Mã CK (VD: MBB, HPG)"
                             maxLength={50}

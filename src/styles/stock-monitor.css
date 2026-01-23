@@ -15,6 +15,44 @@ body {
     line-height: 1.4;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(96, 165, 250, 0.5) rgba(26, 26, 26, 0.3);
+}
+
+/* Modern Scrollbar Styles - Global */
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+body::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+    background: rgba(26, 26, 26, 0.3);
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.6) 0%, rgba(139, 92, 246, 0.6) 100%);
+    border-radius: 10px;
+    border: 3px solid rgba(26, 26, 26, 0.3);
+    background-clip: padding-box;
+    transition: all 0.3s ease;
+}
+
+body::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.9) 0%, rgba(139, 92, 246, 0.9) 100%);
+    border: 3px solid rgba(26, 26, 26, 0.3);
+    background-clip: padding-box;
+    box-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
+}
+
+/* Firefox Scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(96, 165, 250, 0.5) rgba(26, 26, 26, 0.3);
 }
 
 .container {
@@ -225,24 +263,33 @@ body {
     overflow-x: auto;
     width: 100%;
     scrollbar-width: thin;
-    scrollbar-color: #333 #1a1a1a;
+    scrollbar-color: rgba(96, 165, 250, 0.5) rgba(26, 26, 26, 0.3);
 }
 
 .stock-table-container::-webkit-scrollbar {
-    height: 6px;
+    height: 10px;
 }
 
 .stock-table-container::-webkit-scrollbar-track {
-    background: #1a1a1a;
+    background: rgba(26, 26, 26, 0.3);
+    border-radius: 10px;
+    margin: 0 4px;
 }
 
 .stock-table-container::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 3px;
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.6) 0%, rgba(139, 92, 246, 0.6) 100%);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: all 0.3s ease;
 }
 
 .stock-table-container::-webkit-scrollbar-thumb:hover {
-    background: #444;
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.9) 0%, rgba(139, 92, 246, 0.9) 100%);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.4);
 }
 
 .stock-table {
@@ -1629,6 +1676,30 @@ body {
     display: flex;
     flex-direction: column;
     border: 1px solid #252525;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(96, 165, 250, 0.5) rgba(26, 26, 26, 0.3);
+}
+
+.modal-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: rgba(26, 26, 26, 0.5);
+    border-radius: 10px;
+    margin: 8px 0;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(96, 165, 250, 0.7) 0%, rgba(139, 92, 246, 0.7) 100%);
+    border-radius: 10px;
+    border: 2px solid rgba(26, 26, 26, 0.5);
+    background-clip: padding-box;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(96, 165, 250, 1) 0%, rgba(139, 92, 246, 1) 100%);
+    box-shadow: 0 0 15px rgba(96, 165, 250, 0.6);
 }
 
 .modal-header {
@@ -2218,6 +2289,30 @@ body {
 .alerts-list {
     max-height: 350px;
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(34, 197, 94, 0.5) rgba(26, 26, 26, 0.3);
+    padding-right: 4px;
+}
+
+.alerts-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.alerts-list::-webkit-scrollbar-track {
+    background: rgba(26, 26, 26, 0.3);
+    border-radius: 10px;
+}
+
+.alerts-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(34, 197, 94, 0.6) 0%, rgba(16, 185, 129, 0.6) 100%);
+    border-radius: 10px;
+    border: 2px solid rgba(26, 26, 26, 0.3);
+    background-clip: padding-box;
+}
+
+.alerts-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(34, 197, 94, 0.9) 0%, rgba(16, 185, 129, 0.9) 100%);
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
 }
 
 .alert-item {
@@ -2477,6 +2572,30 @@ body {
 
 .stats-table-container {
     overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(234, 179, 8, 0.5) rgba(26, 26, 26, 0.3);
+}
+
+.stats-table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.stats-table-container::-webkit-scrollbar-track {
+    background: rgba(26, 26, 26, 0.3);
+    border-radius: 10px;
+    margin: 0 4px;
+}
+
+.stats-table-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, rgba(234, 179, 8, 0.6) 0%, rgba(245, 158, 11, 0.6) 100%);
+    border-radius: 10px;
+    border: 2px solid rgba(26, 26, 26, 0.3);
+    background-clip: padding-box;
+}
+
+.stats-table-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, rgba(234, 179, 8, 0.9) 0%, rgba(245, 158, 11, 0.9) 100%);
+    box-shadow: 0 0 12px rgba(234, 179, 8, 0.5);
 }
 
 .stats-table {
