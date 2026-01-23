@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useStock } from '../../context/StockContext';
 import { DEFAULT_DATA_SOURCE_URL } from '../../utils/constants';
 
