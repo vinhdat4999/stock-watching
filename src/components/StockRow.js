@@ -293,15 +293,55 @@ function getAlertIndicator(symbol, alerts) {
     if (!alerts || alerts.length === 0) return null;
 
     const stockAlerts = alerts.filter(a => a.symbol === symbol);
-    const hasActiveAlert = stockAlerts.some(a => !a.triggered);
-    const hasTriggeredAlert = stockAlerts.some(a => a.triggered);
+    if (stockAlerts.length === 0) return null;
+
+    const activeAlerts = stockAlerts.filter(a => !a.triggered);
+    const triggeredAlerts = stockAlerts.filter(a => a.triggered);
+
+    const hasActiveAlert = activeAlerts.length > 0;
+    const hasTriggeredAlert = triggeredAlerts.length > 0;
+
+    // Build tooltip message
+    let tooltipMessage = '';
 
     if (hasTriggeredAlert) {
-        return <span className="alert-indicator triggered" title="Đã kích hoạt">✓</span>;
+        tooltipMessage += `🎯 Đã kích hoạt (${triggeredAlerts.length}):\n`;
+        triggeredAlerts.forEach(alert => {
+            if (alert && alert.targetPrice != null) {
+                const conditionText = alert.condition === 'above' ? '≥' : '≤';
+                tooltipMessage += `  • ${conditionText} ${Number(alert.targetPrice).toFixed(2)}\n`;
+            }
+        });
     }
+
     if (hasActiveAlert) {
-        return <span className="alert-indicator active" title="Đang theo dõi">🔔</span>;
+        if (tooltipMessage) tooltipMessage += '\n';
+        tooltipMessage += `⏰ Đang theo dõi (${activeAlerts.length}):\n`;
+        activeAlerts.forEach(alert => {
+            if (alert && alert.targetPrice != null) {
+                const conditionText = alert.condition === 'above' ? '≥' : '≤';
+                tooltipMessage += `  • ${conditionText} ${Number(alert.targetPrice).toFixed(2)}\n`;
+            }
+        });
     }
+
+    // Show triggered alerts with priority
+    if (hasTriggeredAlert) {
+        return (
+            <span className="alert-indicator triggered" title={tooltipMessage.trim()}>
+                ✓
+            </span>
+        );
+    }
+
+    if (hasActiveAlert) {
+        return (
+            <span className="alert-indicator active" title={tooltipMessage.trim()}>
+                🔔
+            </span>
+        );
+    }
+
     return null;
 }
 
